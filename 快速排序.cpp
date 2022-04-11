@@ -1,39 +1,37 @@
 #include<iostream>
 using namespace std;
-int get_middle(int* p, int left, int right)
+int a[] = { 35, 89, 14, 54, 87, 36, 11, 74, 20, 86 };
+
+int partition(int a[], int low, int high)
 {
-	int pivot = p[left];
-	while (left < right)
+	int p = a[low];
+	while (low < high)
 	{
-		while (p[right] > pivot&& left < right)
-			right--;
-		p[left] = p[right];
-		while (p[left] < pivot && left < right)
-			left++;
-		p[right] = p[left];
+		while (low < high && a[high] >= p)
+			high--;
+		a[low] = a[high];
+		while (low < high && a[low] <= p)
+			low++;
+		a[high] = a[low];
 	}
-	p[left] = pivot;
-	return left;
+	a[low] = p;
+	return low;
 }
-void quicksort(int *p,int left,int right)
+
+void quickSort(int a[], int low, int high)
 {
-	if (left < right)
-	{
-		int middle = get_middle(p, left, right);
-		quicksort(p, left, middle - 1);
-		quicksort(p, middle + 1, right);
-	}
-};
+	if (low >= high)
+		return;
+	int p = partition(a, low, high);
+	quickSort(a, low, p - 1);
+	quickSort(a, p + 1, high);
+}
+
 int main()
 {
-	int n;
-	cout << "请输入你想排序的整数个数：" << endl;
-	cin >> n;
-	int* p = new int[n];
-	for (int i = 0; i < n; i++)
-		cin >> p[i];
-	quicksort(p, 0, n - 1);
-	for (int i = 0; i < n; i++)
-		cout << p[i]<<"  ";
+	quickSort(a, 0, 9);
+	for (int i = 0; i < 9; i++)
+		cout << a[i] << "  ";
+	cout << endl;
 	return 0;
 }
